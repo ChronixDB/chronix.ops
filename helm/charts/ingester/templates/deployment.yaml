@@ -1,0 +1,64 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "ingester.fullname" . }}
+  labels:
+    app: {{ template "ingester.name" . }}
+    chart: {{ template "ingester.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "ingester.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "ingester.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.ingester.command }}
+          command:
+{{ toYaml .Values.ingester.command | indent 12 }}
+          {{- end }}
+          {{- if .Values.ingester.args }}
+          args:
+{{ toYaml .Values.ingester.args | indent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.ingester.containerPort }} 
+              protocol: TCP
+        {{- with .Values.volumeMounts }}
+          volumeMounts:
+          - mountPath: /checkpoint
+            name: checkpoint-volume
+{{ toYaml . | indent 10 }}
+{{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.volumes }}
+      volumes:
+        - name: checkpoint-volume
+          emptyDir: {}
+{{ toYaml . | indent 8 }}
+    {{- end }}
+

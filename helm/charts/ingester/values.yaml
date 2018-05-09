@@ -1,0 +1,44 @@
+image:
+  repository: chronix/chronix.ingester
+  tag: latest 
+  pullPolicy: IfNotPresent
+
+# Configuration settings for the chronix.ingester
+ingester:
+
+  # Port on which the chronix.ingester is waiting for connections
+  containerPort: '8080'
+  
+  # If you want to overwrite the ENTRYPOINT of the container uncomment the following line and adjust 
+  # it as necessary.
+  #command: ["/bin/sh","-c"]
+
+  args: {}
+  # In the following lines you must pass the program arguments to the chronix.ingester. Uncomment the following lines,
+  # adjust them and remove the curly braces after 'args'.
+  #  - "kind=elastic"
+  #  - ...
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources: {}
+  # If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+volumeMounts: {}
+
+volumes: {}

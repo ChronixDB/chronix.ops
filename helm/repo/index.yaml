@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  ingester:
+  - apiVersion: v1
+    appVersion: "0.1"
+    created: 2018-05-09T15:58:08.8510953+02:00
+    description: A Helm chart for the chronix.ingester
+    digest: 0328cc9dc3b179e8ba7ec1777416fb6409e42df81fe7b28997f7093d61a6eccf
+    name: ingester
+    urls:
+    - ingester-1.0.0.tgz
+    version: 1.0.0
+generated: 2018-05-09T15:58:08.8500917+02:00
